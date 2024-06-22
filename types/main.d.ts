@@ -1,0 +1,1 @@
+export interface SubmitEvent extends React.FormEvent<HTMLFormElement> {}
