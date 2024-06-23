@@ -12,8 +12,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { chatSession } from "@/lib/AI"
+import { db } from "@/lib/db"
+import { PractitionerInterview } from "@/lib/schema"
 import { SubmitEvent } from "@/types/main"
+import { useUser } from "@clerk/nextjs"
 import { useState } from "react"
+import { v4 as uuidv4 } from 'uuid';
+import moment from "moment"
+import { useRouter } from "next/navigation"
 
 
 const AddNewInterview = () => {
@@ -22,17 +28,45 @@ const AddNewInterview = () => {
   const [jobRole, setJobRole] = useState('')
   const [jobDescription, setJobDescription] = useState('')
   const [yearsOfExperience, setYearsOfExperience] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [jsonResponse, setJsonResponse] = useState([] as any)
+  const router = useRouter()
 
-
+  const {user} = useUser()
   const onSubmit = async (event: SubmitEvent) => {
+    setLoading(true)
     event.preventDefault()
     console.log({jobRole, jobDescription, yearsOfExperience})
 
     const InputPrompt = "Job Position: " + jobRole+ " Job description: " + jobDescription+  " ,Years of Experience: " + yearsOfExperience + " ,Depends on this information please give me " + process.env.NEXT_PUBLIC_TOTAL_INTERVIEW_QUESTIONS + " Interview Question with answered in Json format, Give question and answered as field in JSON"
 
     const result = await chatSession.sendMessage(InputPrompt)
-    console.log(result.response.text())
+    const mockJsonResponse = (result.response.text().replace('```json', '').replace('```', '' ))
+    console.log(JSON.parse(mockJsonResponse)) 
+    setJsonResponse(mockJsonResponse)
 
+    if(mockJsonResponse) {
+      const resp = await db.insert(PractitionerInterview).values({
+        practionerInterviewId: uuidv4(),
+        jsonPractitionerResp: mockJsonResponse,
+        jobPosition: jobRole,
+        jobDesc: jobDescription,
+        jobExperienced: yearsOfExperience,
+        createdBy: user?.primaryEmailAddress?.emailAddress,
+        createdAt:moment().format('DD-MM-YYYY'),
+      }).returning({practionerInterviewId: PractitionerInterview.practionerInterviewId})
+      console.log('Inserted Id:', resp)
+
+      if(resp) {
+        setOpenDialog(false)
+        router.push(`/dashboard/interview/${resp[0].practionerInterviewId}`)
+      }
+
+    } else {
+      console.log('error')
+    }
+
+    setLoading(false)
   }
 
   
@@ -67,7 +101,7 @@ const AddNewInterview = () => {
        </div>
         <div className="gap-5 flex justify-end">
           <Button variant={"ghost"} onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button type="submit">Start Interview</Button>
+          <Button type="submit" disabled={loading} > {loading ? "loading..." : "Start"}  interview</Button>
         </div>
         </form>
       </DialogDescription>
