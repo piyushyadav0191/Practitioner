@@ -6,6 +6,7 @@ import { PractitionerInterview } from '@/lib/schema'
 import { PractitionerResponse } from '@/types/main'
 import { eq } from 'drizzle-orm'
 import { Lightbulb, WebcamIcon } from 'lucide-react'
+import Link from 'next/link'
 import React, { useEffect } from 'react'
 import Webcam from "react-webcam";
 
@@ -61,7 +62,9 @@ const InterviewPage = ({ params }: InterviewPageProps) => {
       </div>
 
       <div className='flex justify-end items-end my-4'>
+        <Link href={`/dashboard/interview/${params.interviewId}/start`}>
         <Button>Start Interview</Button>
+        </Link>
       </div>
 
     </div>

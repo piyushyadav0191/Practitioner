@@ -9,3 +9,8 @@ export type PractitionerResponse = {
     practionerInterviewId: string
 
 }
+
+export type QuestionAnswers= {
+    question: string
+    answer: string
+} 
