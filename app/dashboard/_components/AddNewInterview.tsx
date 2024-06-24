@@ -6,17 +6,15 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  DialogTitle
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { chatSession } from "@/lib/AI"
 import { db } from "@/lib/db"
 import { PractitionerInterview } from "@/lib/schema"
-import { SubmitEvent } from "@/types/main"
 import { useUser } from "@clerk/nextjs"
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import { v4 as uuidv4 } from 'uuid';
 import moment from "moment"
 import { useRouter } from "next/navigation"
@@ -33,7 +31,7 @@ const AddNewInterview = () => {
   const router = useRouter()
 
   const {user} = useUser()
-  const onSubmit = async (event: SubmitEvent) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     setLoading(true)
     event.preventDefault()
     console.log({jobRole, jobDescription, yearsOfExperience})
@@ -101,7 +99,7 @@ const AddNewInterview = () => {
        </div>
         <div className="gap-5 flex justify-end">
           <Button variant={"ghost"} onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button type="submit" disabled={loading} > {loading ? "loading..." : "Start"}  interview</Button>
+          <Button type="submit" disabled={loading} > {loading ? "Loading..." : "Start Interview"}  </Button>
         </div>
         </form>
       </DialogDescription>
