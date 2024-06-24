@@ -1,6 +1,6 @@
 export interface SubmitEvent extends React.FormEvent<HTMLFormElement> {}
 
-export type ParticularInterviewDataResponse = {
+export type PractitionerResponse = {
     id?: number
     createdAt: string
     createdBy: string

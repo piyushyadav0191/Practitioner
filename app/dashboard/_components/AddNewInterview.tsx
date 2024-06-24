@@ -52,7 +52,7 @@ const AddNewInterview = () => {
         jobPosition: jobRole,
         jobDesc: jobDescription,
         jobExperienced: yearsOfExperience,
-        createdBy: user?.primaryEmailAddress?.emailAddress,
+        createdBy: user?.primaryEmailAddress?.emailAddress as string,
         createdAt:moment().format('DD-MM-YYYY'),
       }).returning({practionerInterviewId: PractitionerInterview.practionerInterviewId})
       console.log('Inserted Id:', resp)
