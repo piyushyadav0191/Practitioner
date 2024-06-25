@@ -14,3 +14,15 @@ export type QuestionAnswers= {
     question: string
     answer: string
 } 
+
+export type UserAswerProp= {
+    id?: number,
+    practitionerInterviewIdRef: string,
+    question: string,
+    correctAns: string,
+    userAns: string,
+    feedback: string,
+    rating: string,
+    userEmail: string,
+    createdAt: string,
+}

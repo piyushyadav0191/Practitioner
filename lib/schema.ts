@@ -11,3 +11,14 @@ export const PractitionerInterview = pgTable('practitioner_interview', {
     practionerInterviewId: varchar("practioner_interview_id").notNull(),
 })
 
+export const UserAswer= pgTable("user_answer", {
+    id: serial("id").primaryKey(),
+    practitionerInterviewIdRef: varchar("practioner_interview_id").notNull(),
+    question: varchar("question").notNull(),
+    correctAns: text("correct_answer").notNull(),
+    userAns: text("user_answer").notNull(),
+    feedback: text("feedback").notNull(),
+    rating: varchar("rating").notNull(),
+    userEmail: varchar("user_email"),
+    createdAt: varchar("created_at"),
+})
