@@ -1,6 +1,7 @@
 import { UserButton } from '@clerk/nextjs'
 import React from 'react'
 import AddNewInterview from './_components/AddNewInterview'
+import PrevInterviewList from './_components/PrevInterviewList'
 
 const DashboardPage = () => {
   return (
@@ -10,6 +11,8 @@ const DashboardPage = () => {
      <div className='grid grid-cols-1 md:grid-cols-3 my-5'>
       <AddNewInterview />
      </div>
+    
+     <PrevInterviewList />
     </div>
   )
 }
